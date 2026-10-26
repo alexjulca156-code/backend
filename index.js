@@ -1,28 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const sequelize = require('./Config/database');
-const Categoria = require('./Models/Categoria');
-const Comentario = require('./Models/Comentario');
-const Ticket = require('./Models/Ticket');
-const Usuario = require('./Models/Usuario');
+require('./Models');
 const categoriaRoutes = require('./Routes/categoriaRoutes');
 const comentarioRoutes = require('./Routes/comentarioRoutes');
 const ticketRoutes = require('./Routes/ticketRoutes');
 const usuarioRoutes = require('./Routes/usuarioRoutes');
-
-Usuario.hasMany(Ticket, { foreignKey: 'cliente_id', as: 'tickets' });
-Usuario.hasMany(Ticket, { foreignKey: 'tecnico_id', as: 'ticketsAsignados' });
-Ticket.belongsTo(Usuario, {
-  foreignKey: 'cliente_id',
-  as: 'cliente',
-  onDelete: 'RESTRICT',
-});
-Ticket.belongsTo(Usuario, { foreignKey: 'tecnico_id', as: 'tecnico' });
-Categoria.hasMany(Ticket, { foreignKey: 'categoria_id', as: 'tickets' });
-Ticket.belongsTo(Categoria, { foreignKey: 'categoria_id', as: 'categoria' });
-Ticket.hasMany(Comentario, { foreignKey: 'ticket_id', as: 'comentarios' });
-Comentario.belongsTo(Ticket, { foreignKey: 'ticket_id', as: 'ticket' });
-Usuario.hasMany(Comentario, { foreignKey: 'usuario_id', as: 'comentarios' });
-Comentario.belongsTo(Usuario, { foreignKey: 'usuario_id', as: 'usuario' });
 
 const app = express();
 const PORT = process.env.PORT || 3000;

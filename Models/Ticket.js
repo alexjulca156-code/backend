@@ -49,4 +49,15 @@ const Ticket = sequelize.define(
   }
 );
 
+Ticket.associate = ({ Usuario, Categoria, Comentario }) => {
+  Ticket.belongsTo(Usuario, {
+    foreignKey: 'cliente_id',
+    as: 'cliente',
+    onDelete: 'RESTRICT',
+  });
+  Ticket.belongsTo(Usuario, { foreignKey: 'tecnico_id', as: 'tecnico' });
+  Ticket.belongsTo(Categoria, { foreignKey: 'categoria_id', as: 'categoria' });
+  Ticket.hasMany(Comentario, { foreignKey: 'ticket_id', as: 'comentarios' });
+};
+
 module.exports = Ticket;
